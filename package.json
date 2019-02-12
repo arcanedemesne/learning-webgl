@@ -24,6 +24,6 @@
   },
   "repository": {
   "type" : "git",
-  "url" : "https://github.com/arcanedemesne/learning-webgl.git"
+  "url" : "git@github.com:arcanedemesne/learning-webgl.git"
 }
 }
