@@ -1,4 +1,6 @@
-const initRender = (gl, programInfo, buffers) => {
+let squareRotation = 0.0;
+
+const initRender = (gl, programInfo, buffers, deltaTime) => {
   gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -80,6 +82,13 @@ const initRender = (gl, programInfo, buffers) => {
       programInfo.attribLocations.vertexColor);
   }
 
+  {
+    mat4.rotate(modelViewMatrix,  // destination matrix
+                modelViewMatrix,  // matrix to rotate
+                squareRotation,   // amount to rotate in radians
+                [0, 0, 1]);       // axis to rotate around
+  }
+
   // Tell WebGL to use our program when drawing
 
   gl.useProgram(programInfo.program);
@@ -100,6 +109,8 @@ const initRender = (gl, programInfo, buffers) => {
     const vertexCount = 4;
     gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
   }
+
+  squareRotation += deltaTime;
 }
 
 export default initRender;
