@@ -1,7 +1,9 @@
 import initRender from './utility/render';
 import initShaderProgram from './utility/shader';
 import initBuffers from './utility/buffer';
+import loadTexture from './utility/texture';
 import { vsSource, fsSource } from './source';
+import cubetexture from './resources/cubetexture.gif';
 
 const init = () => {
   const canvas = document.querySelector("#glCanvas");
@@ -21,15 +23,19 @@ const init = () => {
     program: shaderProgram,
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
+      textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
     },
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+      uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
     },
   };
 
   const buffers = initBuffers(gl);
+
+  // Load texture
+  const texture = loadTexture(gl, cubetexture);
 
   let then = 0;
 
@@ -39,7 +45,7 @@ const init = () => {
     const deltaTime = now - then;
     then = now;
 
-    initRender(gl, programInfo, buffers, deltaTime);
+    initRender(gl, programInfo, buffers, texture, deltaTime);
 
     requestAnimationFrame(render);
   }
