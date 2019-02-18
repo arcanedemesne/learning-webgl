@@ -24,4 +24,4 @@ const fsSource = `
 export {
   vsSource,
   fsSource,
-}
+};

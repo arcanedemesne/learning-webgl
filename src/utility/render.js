@@ -1,4 +1,4 @@
-let squareRotation = 0.0;
+let cubeRotation = 0.0;
 
 const initRender = (gl, programInfo, buffers, deltaTime) => {
   gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
@@ -36,7 +36,7 @@ const initRender = (gl, programInfo, buffers, deltaTime) => {
   const modelViewMatrix = mat4.create();
 
   // Now move the drawing position a bit to where we want to
-  // start drawing the square.
+  // start drawing the cube.
 
   mat4.translate(modelViewMatrix,     // destination matrix
                  modelViewMatrix,     // matrix to translate
@@ -45,7 +45,7 @@ const initRender = (gl, programInfo, buffers, deltaTime) => {
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute
   {
-    const numComponents = 2;
+    const numComponents = 3;
     const type = gl.FLOAT;
     const normalize = false;
     const stride = 0;
@@ -85,16 +85,19 @@ const initRender = (gl, programInfo, buffers, deltaTime) => {
   {
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
-                squareRotation,   // amount to rotate in radians
-                [0, 0, 1]);       // axis to rotate around
+                cubeRotation * .7,   // amount to rotate in radians
+                [1, 1, 1]);       // axis to rotate around
+  }
+
+  // Tell WebGL which indices to use to index the vertices
+  {
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
   }
 
   // Tell WebGL to use our program when drawing
-
   gl.useProgram(programInfo.program);
 
   // Set the shader uniforms
-
   gl.uniformMatrix4fv(
       programInfo.uniformLocations.projectionMatrix,
       false,
@@ -105,12 +108,13 @@ const initRender = (gl, programInfo, buffers, deltaTime) => {
       modelViewMatrix);
 
   {
+    const vertexCount = 36;
+    const type = gl.UNSIGNED_SHORT;
     const offset = 0;
-    const vertexCount = 4;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
   }
 
-  squareRotation += deltaTime;
+  cubeRotation += deltaTime;
 }
 
 export default initRender;
