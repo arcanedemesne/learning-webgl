@@ -42,6 +42,10 @@ const initRender = (gl, programInfo, buffers, texture, deltaTime) => {
                  modelViewMatrix,     // matrix to translate
                  [-0.0, 0.0, -6.0]);  // amount to translate
 
+  const normalMatrix = mat4.create();
+  mat4.invert(normalMatrix, modelViewMatrix);
+  mat4.transpose(normalMatrix, normalMatrix);
+
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute
   {
@@ -74,6 +78,26 @@ const initRender = (gl, programInfo, buffers, texture, deltaTime) => {
       gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
   }
 
+  // Tell WebGL how to pull out the normals from
+  // the normal buffer into the vertexNormal attribute.
+  {
+    const numComponents = 3;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
+    gl.vertexAttribPointer(
+      programInfo.attribLocations.vertexNormal,
+      numComponents,
+      type,
+      normalize,
+      stride,
+      offset);
+    gl.enableVertexAttribArray(
+      programInfo.attribLocations.vertexNormal);
+  }
+
   {
     mat4.rotate(modelViewMatrix,  // destination matrix
                 modelViewMatrix,  // matrix to rotate
@@ -91,13 +115,19 @@ const initRender = (gl, programInfo, buffers, texture, deltaTime) => {
 
   // Set the shader uniforms
   gl.uniformMatrix4fv(
-      programInfo.uniformLocations.projectionMatrix,
-      false,
-      projectionMatrix);
+    programInfo.uniformLocations.projectionMatrix,
+    false,
+    projectionMatrix);
+
   gl.uniformMatrix4fv(
-      programInfo.uniformLocations.modelViewMatrix,
-      false,
-      modelViewMatrix);
+    programInfo.uniformLocations.modelViewMatrix,
+    false,
+    modelViewMatrix);
+
+  gl.uniformMatrix4fv(
+    programInfo.uniformLocations.normalMatrix,
+    false,
+    normalMatrix);
 
   // Tell WebGL we want to affect texture unit 0
   gl.activeTexture(gl.TEXTURE0);
