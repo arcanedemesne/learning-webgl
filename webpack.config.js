@@ -14,7 +14,7 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
     // your stuff
-    publicPath: '/assets/'
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -26,7 +26,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif|svg|mp4|mov|avi|mpeg?2)$/i,
         loader: 'file-loader'
       },
     ],
