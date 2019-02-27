@@ -5,8 +5,6 @@ import loadTexture from './utility/texture';
 import { vsSource, fsSource } from './source';
 import cubetexture from './resources/cubetexture.gif';
 
-alert('hi');
-
 const init = () => {
   const canvas = document.querySelector("#glCanvas");
   // Initialize the GL context
