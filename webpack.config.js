@@ -14,7 +14,7 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
     // your stuff
-    publicPath: '/assets/'
+    publicPath: '/'
   },
   module: {
     rules: [

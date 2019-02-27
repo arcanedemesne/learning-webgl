@@ -23,7 +23,8 @@ const loadTexture = (gl, url) => {
                 width, height, border, srcFormat, srcType,
                 pixel);
 
-  const onload = () => {
+  const image = new Image();
+  image.onload = function() {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
                   srcFormat, srcType, image);
@@ -42,9 +43,6 @@ const loadTexture = (gl, url) => {
        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     }
   };
-
-  const image = new Image();
-  image.onload = onload;
   image.src = url;
 
   return texture;
